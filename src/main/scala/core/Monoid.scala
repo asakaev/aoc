@@ -4,7 +4,7 @@ trait Monoid[A]:
   extension (x: A) def combine (y: A): A
   def unit: A
 
-given intMultMonoid as Monoid[Int]:
+given intMonoid as Monoid[Int]:
   extension (x: Int) def combine (y: Int): Int = x * y
   def unit: Int = 1
 

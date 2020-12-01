@@ -1,5 +1,14 @@
 val dottyVersion = "3.0.0-M2"
 
+// -new-syntax -rewrite
+// -indent -rewrite
+Compile / scalacOptions ++= List(
+  "-explain",
+  "-explain-types",
+  "-new-syntax",
+  "-rewrite"
+)
+
 lazy val root = project
   .in(file("."))
   .settings(
