@@ -9,14 +9,12 @@ object Main:
   def part1(xs: List[Int]): Option[Int] =
     xs
       .combinations(2)
-      .collectFirst { case xs as a :: b :: Nil if (a + b == 2020) => xs.reduce(_ combine _) }
+      .collectFirst { case xs if xs.sum == 2020 => xs.reduce(_ combine _) }
 
   def part2(xs: List[Int]): Option[Int] =
     xs
       .combinations(3)
-      .collectFirst {
-        case xs as a :: b :: c :: Nil if (a + b + c == 2020) => xs.reduce(_ combine _)
-      }
+      .collectFirst { case xs if xs.sum == 2020 => xs.reduce(_ combine _) }
 
   def main(args: Array[String]): Unit =
     val i1 = data("data/1a.txt").map(_.toInt)
