@@ -1,4 +1,4 @@
-package core
+package fp
 
 trait Monoid[A]:
   extension (x: A) def combine (y: A): A
