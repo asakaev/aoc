@@ -4,11 +4,11 @@ object Day02:
 
   opaque type Symbol = Char
   object Symbol:
-    def apply(c: Char): Symbol = c
+    def apply(value: Char): Symbol = value
 
   opaque type Password = String
   object Password:
-    def apply(s: String): Password = s
+    def apply(value: String): Password = value
 
   final case class Interval(min: Int, max: Int)
   final case class Policy(s: Symbol, i: Interval)
@@ -35,20 +35,20 @@ object Day02:
   def closedInterval(v: Int, i: Interval): Boolean =
     i.min <= v && v <= i.max
 
-  def validPassword(r: Record): Boolean =
+  def validPasswordA(r: Record): Boolean =
     val n = r.password.count(_ == r.policy.s)
     closedInterval(n, r.policy.i)
 
-  def validPassword2(r: Record): Boolean =
+  def validPasswordB(r: Record): Boolean =
     val v1 = r.password(r.policy.i.min - 1)
     val v2 = r.password(r.policy.i.max - 1)
     List(v1, v2).count(_ == r.policy.s) == 1
 
   def solveA(xs: List[Record]): Int =
-    xs.count(validPassword)
+    xs.count(validPasswordA)
 
   def solveB(xs: List[Record]): Int =
-    xs.count(validPassword2)
+    xs.count(validPasswordB)
 
   def main(args: Array[String]): Unit =
     val i = file.readAll("data/2a.txt").map(record)

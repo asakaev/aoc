@@ -44,18 +44,18 @@ class Day02Suite:
     assertEquals(closedInterval(3, i), true)
     assertEquals(closedInterval(4, i), false)
 
-  @Test def checkValidPassword(): Unit =
+  @Test def checkValidPasswordA(): Unit =
     val i1 = Record(Policy(Symbol('a'), Interval(1, 3)), Password("abcde"))
     val i2 = Record(Policy(Symbol('b'), Interval(1, 3)), Password("cdefg"))
     val i3 = Record(Policy(Symbol('c'), Interval(2, 9)), Password("ccccccccc"))
-    assertEquals(validPassword(i1), true)
-    assertEquals(validPassword(i2), false)
-    assertEquals(validPassword(i3), true)
+    assertEquals(validPasswordA(i1), true)
+    assertEquals(validPasswordA(i2), false)
+    assertEquals(validPasswordA(i3), true)
 
-  @Test def checkValidPassword2(): Unit =
+  @Test def checkValidPasswordB(): Unit =
     val i1 = Record(Policy(Symbol('a'), Interval(1, 3)), Password("abcde"))
     val i2 = Record(Policy(Symbol('b'), Interval(1, 3)), Password("cdefg"))
     val i3 = Record(Policy(Symbol('c'), Interval(2, 9)), Password("ccccccccc"))
-    assertEquals(validPassword2(i1), true)
-    assertEquals(validPassword2(i2), false)
-    assertEquals(validPassword2(i3), false)
+    assertEquals(validPasswordB(i1), true)
+    assertEquals(validPasswordB(i2), false)
+    assertEquals(validPasswordB(i3), false)
