@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 import util.file
 
 object Day03:
@@ -10,7 +11,7 @@ object Day03:
   object SlopeMap:
     def apply(xs: Vector[Vector[Square]]): SlopeMap = xs
 
-  final case class Point(row: Int, col: Int)
+  final case class Pos(row: Int, col: Int)
   final case class Slope(right: Int, down: Int)
 
   opaque type Trees = Int
@@ -27,10 +28,10 @@ object Day03:
   def slopeMap(xs: List[String]): SlopeMap =
     xs.toVector.map(row)
 
-  def point(p: Point, s: Slope): Point =
-    Point(p.row + s.down, p.col + s.right)
+  def nextPos(p: Pos, s: Slope): Pos =
+    Pos(p.row + s.down, p.col + s.right)
 
-  def locate(p: Point, sm: SlopeMap): Option[Square] =
+  def locate(p: Pos, sm: SlopeMap): Option[Square] =
     val rows = sm.size
     if p.row >= rows then None
     else
@@ -41,17 +42,17 @@ object Day03:
       Some(r)
   
   def traverseSlope(sm: SlopeMap, s: Slope): Trees =
-    def go(p: Point, trees: Trees): Trees =
+    @tailrec def go(p: Pos, t: Trees): Trees =
       locate(p, sm) match {
-        case None => trees
+        case None => t
         case Some(sq) =>
           val t1 = sq match {
-            case Square.Open => trees
-            case Square.Tree => trees + 1
+            case Square.Open => t
+            case Square.Tree => t + 1
           }
-          go(point(p, s), t1)
+          go(nextPos(p, s), t1)
       }
-    go(Point(0, 0), 0)
+    go(Pos(0, 0), 0)
 
   def solveA(sm: SlopeMap): Trees =
     traverseSlope(sm, Slope(3, 1))
