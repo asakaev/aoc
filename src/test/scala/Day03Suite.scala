@@ -58,3 +58,20 @@ class Day03Suite:
     val s = Slope(3, 1)
     val trees = traverseSlope(sm, s)
     assertEquals(trees, 7)
+
+  @Test def checkSolveB(): Unit =
+    val xs = List(
+      "..##.......",
+      "#...#...#..",
+      ".#....#..#.",
+      "..#.#...#.#",
+      ".#...##..#.",
+      "..#.##.....",
+      ".#.#.#....#",
+      ".#........#",
+      "#.##...#...",
+      "#...##....#",
+      ".#..#...#.#"
+    )
+    val sm = slopeMap(xs)
+    assertEquals(solveB(sm), 336)

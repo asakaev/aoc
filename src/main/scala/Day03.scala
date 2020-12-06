@@ -49,17 +49,27 @@ object Day03:
             case Square.Open => trees
             case Square.Tree => trees + 1
           }
-
-          val p1 = point(p, s)
-          go(p1, t1)
+          go(point(p, s), t1)
       }
     go(Point(0, 0), 0)
 
   def solveA(sm: SlopeMap): Trees =
     traverseSlope(sm, Slope(3, 1))
 
+  def solveB(sm: SlopeMap): Int =
+    val slopes = List(
+      Slope(1, 1),
+      Slope(3, 1),
+      Slope(5, 1),
+      Slope(7, 1),
+      Slope(1, 2)
+    )
+    slopes.foldLeft(1)((acc, s) => acc * traverseSlope(sm, s))
+
   def main(args: Array[String]): Unit =
     val i = file.readAll("data/3a.txt")
     val sm = slopeMap(i)
     val r1 = solveA(sm)
+    val r2 = solveB(sm)
     println(r1) // 225
+    println(r2) // 1115775000
