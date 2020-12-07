@@ -3,17 +3,17 @@ import util.file
 
 object Day04:
 
-  enum Field {
+  enum Tag {
     case BirthYear, IssueYear, ExpirationYear, Height, HairColor, EyeColor, PassportId, CountryId
   }
 
-  opaque type Passport = Set[Field]
+  opaque type Passport = Map[Tag, String]
   object Passport:
-    def apply(s: Set[Field]): Passport = s
+    def apply(m: Map[Tag, String]): Passport = m
 
-  import Field._
+  import Tag._
 
-  def field(s: String): Field =
+  def tag(s: String): Tag =
     s match {
       case "byr" => BirthYear
       case "iyr" => IssueYear
@@ -32,10 +32,10 @@ object Day04:
   def passport(s: String): Passport =
     val kvs = s.split(" ")
     val xs = kvs.map { s =>
-      val (k, _) = kv(s)
-      field(k)
+      val (k, v) = kv(s)
+      (tag(k), v)
     }
-    xs.toSet
+    xs.toMap
 
   def group[A](xs: List[A])(p: A => Boolean): List[List[A]] =
     @tailrec def go(xs: List[A], s: (List[List[A]], List[A])): (List[List[A]], List[A]) =
@@ -52,14 +52,14 @@ object Day04:
 
   def passports(xs: List[String]): List[Passport] = 
     chunks(xs).map { xs =>
-      xs.foldLeft(Set.empty[Field])((acc, s) => passport(s) ++ acc )
+      xs.foldLeft(Map.empty[Tag, String])((acc, s) => passport(s) ++ acc )
     }
 
-  def validPassport(p: Passport): Boolean =
-    (p - CountryId).size == 7
+  def validPassportA(p: Passport): Boolean =
+    (p.keys.toSet - CountryId).size == 7
 
   def solveA(xs: List[String]): Int =
-    passports(xs).count(validPassport)
+    passports(xs).count(validPassportA)
 
   def main(args: Array[String]): Unit =
     val i = file.readAll("data/4a.txt")
