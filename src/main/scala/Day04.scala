@@ -99,7 +99,6 @@ object Day04:
   def validPassportData(p: Passport): Boolean =
     p.forall {
       case (BirthYear, s)      => Validation.validBirthYear(s)
-      case (BirthYear, s)      => Validation.validBirthYear(s)
       case (IssueYear, s)      => Validation.validIssueYear(s)
       case (ExpirationYear, s) => Validation.validExpirationYear(s)
       case (Height, s)         => Validation.validHeight(s)
