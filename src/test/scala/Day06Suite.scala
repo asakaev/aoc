@@ -9,3 +9,8 @@ class Day06Suite:
     val xs = file.readAll("data/6e.txt")
     val r = solveA(xs)
     assertEquals(r, 11)
+
+  @Test def checkSolveB(): Unit =
+    val xs = file.readAll("data/6e.txt")
+    val r = solveB(xs)
+    assertEquals(r, 6)

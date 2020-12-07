@@ -21,7 +21,13 @@ object Day06:
   def solveA(xs: List[String]) =
     chunks(xs).map(_.mkString.toSet.size).sum
 
+  // TODO: smarter?
+  def solveB(xs: List[String]): Int =
+    chunks(xs).map(_.map(_.toSet).reduce(_ & _).size).sum
+
   def main(args: Array[String]): Unit =
     val i = file.readAll("data/6a.txt")
     val r1 = solveA(i)
+    val r2 = solveB(i)
     println(r1) // 7110
+    println(r2) // 3628
