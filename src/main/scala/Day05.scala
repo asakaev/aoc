@@ -63,8 +63,14 @@ object Day05:
   def solveA(xs: List[String]): Int =
     xs.map(decode).map(seatId).max
 
+  // TODO: faster algo?
+  def solveB(xs: List[String]): Option[Int] =
+    val ys = xs.map(decode).map(seatId).sorted
+    ys.zip(ys.tail).collectFirst { case (a, b) if (b - a > 1) => a + 1 }
 
   def main(args: Array[String]): Unit =
     val i = file.readAll("data/5a.txt")
     val r1 = solveA(i)
+    val r2 = solveB(i)
     println(r1) // 832
+    println(r2) // 517
