@@ -37,7 +37,57 @@ object Day07:
   def solveA(xs: List[String]): Int =
     solve(xs.map(relation))
 
+  //
+
+  final case class Bag(n: Int, kind: String)
+
+  opaque type Label = String
+  opaque type Neighbors = List[Bag]
+  opaque type Rule = (Label, Neighbors)
+  opaque type Dictionary = Map[Label, Neighbors]
+
+  def rule(s: String): Rule =
+    val split = s.split("contain ")
+    val bag = split(0).split(" bag")(0)
+    val r0 = split(1)
+
+    val bags: List[Bag] =
+      if r0.startsWith("no") then Nil
+      else
+        val r = r0.split(", ").toList
+        r.map { s =>
+          val x1 = s.split("bag").take(1)(0).dropRight(1)
+          val x2 = x1.split(" ")
+          val n = x2(0).toInt
+          val kind = x2.drop(1).mkString(" ")
+          Bag(n, kind)
+        }
+
+    (bag, bags)
+
+  def labels(b: Bag): List[Label] =
+    List.fill(b.n)(b.kind)
+
+  def traverse(m: Dictionary): Int =
+    @tailrec def go(queue: List[String], acc: Int): Int =
+      queue match {
+        case Nil => acc
+        case h :: tl =>
+          val tasks = m.getOrElse(h, Nil).flatMap(labels)
+          go(tasks ++ tl, acc + tasks.size)
+      }
+    go(List(ShinyGold), 0)
+
+  def dictionary(xs: List[String]): Dictionary =
+    xs.foldLeft(Map.empty[Label, Neighbors])((acc, s) => acc + rule(s))
+
+  def solveB(xs: List[String]): Int =
+    val m = dictionary(xs)
+    traverse(m)
+
   def main(args: Array[String]): Unit =
     val i = file.readAll("data/7a.txt")
     val r1 = solveA(i)
+    val r2 = solveB(i)
     println(r1) // 259
+    println(r2) // 45018

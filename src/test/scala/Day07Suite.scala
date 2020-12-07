@@ -33,3 +33,16 @@ class Day07Suite:
     val rs = xs.map(relation)
     val r = solve(rs)
     assertEquals(r, 4)
+
+  @Test def checkRule(): Unit =
+    val s1 = "muted tomato bags contain 5 dim white bags, 2 vibrant gold bags, 1 vibrant coral bag."
+    val s2 = "muted gold bags contain no other bags."
+    val e1 = ("muted tomato",List(Bag(5,"dim white"), Bag(2,"vibrant gold"), Bag(1,"vibrant coral")))
+    val e2 = ("muted gold",List())
+    assertEquals(rule(s1), e1)
+    assertEquals(rule(s2), e2)
+
+  @Test def checkSolveB(): Unit =
+    val xs = file.readAll("data/7f.txt")
+    val r = solveB(xs)
+    assertEquals(r, 126)
