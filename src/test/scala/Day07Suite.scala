@@ -7,30 +7,30 @@ class Day07Suite:
 
   @Test def checkRelation(): Unit =
     val xs = file.readAll("data/7e.txt")
-    val r = xs.map(relation)
+    val r = xs.map(vertex)
     val expected = List(
-      Relation("light red",List("bright white", "muted yellow")),
-      Relation("dark orange",List("bright white", "muted yellow")),
-      Relation("bright white",List("shiny gold")),
-      Relation("muted yellow",List("shiny gold", "faded blue")),
-      Relation("shiny gold",List("dark olive", "vibrant plum")),
-      Relation("dark olive",List("faded blue", "dotted black")),
-      Relation("vibrant plum",List("faded blue", "dotted black")),
-      Relation("faded blue",List()),
-      Relation("dotted black",List())
+      Vertex(Label("light red"),List(Label("bright white"), Label("muted yellow"))),
+      Vertex(Label("dark orange"),List(Label("bright white"), Label("muted yellow"))),
+      Vertex(Label("bright white"),List(Label("shiny gold"))),
+      Vertex(Label("muted yellow"),List(Label("shiny gold"), Label("faded blue"))),
+      Vertex(Label("shiny gold"),List(Label("dark olive"), Label("vibrant plum"))),
+      Vertex(Label("dark olive"),List(Label("faded blue"), Label("dotted black"))),
+      Vertex(Label("vibrant plum"),List(Label("faded blue"), Label("dotted black"))),
+      Vertex(Label("faded blue"),Nil),
+      Vertex(Label("dotted black"),Nil)
     )
     assertEquals(r, expected)
 
   @Test def checkRoots(): Unit =
     val xs = file.readAll("data/7e.txt")
-    val rs = xs.map(relation)
+    val rs = xs.map(vertex)
     val r = roots(rs, ShinyGold)
     val expected = List("bright white", "muted yellow")
     assertEquals(r, expected)
 
   @Test def checkSolve(): Unit =
     val xs = file.readAll("data/7e.txt")
-    val rs = xs.map(relation)
+    val rs = xs.map(vertex)
     val r = solve(rs)
     assertEquals(r, 4)
 

@@ -3,48 +3,48 @@ import util.file
 
 object Day07:
 
-  val ShinyGold = "shiny gold"
+  opaque type Label = String
+  object Label:
+    def apply(s: String): Label = s
 
-  final case class Relation(root: String, leafs: List[String])
+  val ShinyGold: Label = "shiny gold"
+
+  final case class Vertex(label: Label, neighbors: List[Label])
 
   // TODO: ugly
-  def relation(s: String): Relation =
+  def vertex(s: String): Vertex =
     val a = s.split("contain")
     val root = a(0).split(" bag")(0)
     val r0 = a.drop(1).mkString
     val r1 = r0.split(",")
     val ls = r1.toList.map(_.split(" ").drop(2).dropRight(1).mkString(" "))
     val leafs = ls.filter(_ != "other")
-    Relation(root, leafs)
+    Vertex(root, leafs)
 
-  def roots(xs: List[Relation], leaf: String): List[String] =
-    xs.collect { case Relation(root, ls) if ls.contains(leaf)  => root }
+  def roots(xs: List[Vertex], leaf: Label): List[Label] =
+    xs.collect { case Vertex(label, ls) if ls.contains(leaf) => label }
 
-  def solve(xs: List[Relation]) =
-    @tailrec def go(acc: Set[String], leafs: List[String]): Set[String] =
+  def solve(xs: List[Vertex]) =
+    @tailrec def go(seen: Set[String], leafs: List[String]): Set[String] =
       leafs match {
-        case Nil => acc
+        case Nil => seen
         case h :: tl =>
           val rs = roots(xs, h)
           val next = rs ++ tl
-          val acc1 = rs.toSet ++ acc
+          val acc1 = rs.toSet ++ seen
           go(acc1, next)
       }
-
-    val s = go(Set.empty, List(ShinyGold))
-    s.size
+    go(Set.empty, List(ShinyGold)).size
 
   def solveA(xs: List[String]): Int =
-    solve(xs.map(relation))
+    solve(xs.map(vertex))
 
   //
 
   final case class Bag(n: Int, kind: String)
 
-  opaque type Label = String
-  opaque type Neighbors = List[Bag]
-  opaque type Rule = (Label, Neighbors)
-  opaque type Dictionary = Map[Label, Neighbors]
+  opaque type Rule = (Label, List[Bag])
+  opaque type Dictionary = Map[Label, List[Bag]]
 
   def rule(s: String): Rule =
     val split = s.split("contain ")
@@ -79,11 +79,10 @@ object Day07:
     go(List(ShinyGold), 0)
 
   def dictionary(xs: List[String]): Dictionary =
-    xs.foldLeft(Map.empty[Label, Neighbors])((acc, s) => acc + rule(s))
+    xs.foldLeft(Map.empty[Label, List[Bag]])((acc, s) => acc + rule(s))
 
   def solveB(xs: List[String]): Int =
-    val m = dictionary(xs)
-    traverse(m)
+    traverse(dictionary(xs))
 
   def main(args: Array[String]): Unit =
     val i = file.readAll("data/7a.txt")
