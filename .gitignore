@@ -1,4 +1,5 @@
-target/
-.metals/
 .vscode/
-.dotty-ide.json
+.metals/
+.bloop/
+metals.sbt
+target/
